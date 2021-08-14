@@ -8,12 +8,13 @@
         <h1>{{recipeDetail.name}}</h1>
     </div>
 </div>
+
 <div class="row">
     <div class="col-xs-12">
         <div class="btn-group" appDropdown>
             <button class="btn btn-primary dropdown-toggle">Manage Recipe <span class="caret"></span></button>
             <ul class="dropdown-menu">
-                <li><a href="">To Shopping List</a>
+                <li (click)="onAddIngToShoppingList()"><a href="#">To Shopping List</a>
                 </li>
                 <li><a href="">Edit Recipe</a>
                 </li>
@@ -31,8 +32,13 @@
         <p>{{recipeDetail.description}}</p>
     </div>
 </div>
+
 <div class="row">
     <div class="col-xs-12">
-        <p>Ingredients</p>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let ing of recipeDetail.ingredients">
+                {{ing.name}} - {{ing.amount}}
+            </li>
+        </ul>
     </div>
 </div>
