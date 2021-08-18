@@ -27,4 +27,7 @@ export class RecipeService {
   getRecipes() {
     return this.Recipes.slice();
   }
+  onAddNewRecipe(recipe: Recipe) {
+    //  this.Recipes.push(recipe);
+  }
 }
