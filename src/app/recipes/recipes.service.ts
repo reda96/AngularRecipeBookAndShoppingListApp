@@ -1,34 +1,21 @@
 import { Injectable, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
+import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
+import * as fromShoppingList from '../shopping-list/store/shopping-list.reducer';
 @Injectable()
 export class RecipeService implements OnInit {
-  private Recipes: Recipe[] = [
-    // new Recipe(
-    //   'Big Tasty',
-    //   'mcdonalds big tasty compo',
-    //   `https://www.mcdonalds.eg/Cms_Data/Contents/En/Media/images/Menu/large-Image/Double-Big-Tasty.png`,
-    //   [new Ingredient('Meat', 2), new Ingredient('French fries', 20)]
-    // ),
-    // new Recipe(
-    //   'Chicken breast',
-    //   'delicious boneless skinless grilled chicken breast',
-    //   `https://diethood.com/wp-content/uploads/2019/09/Air-Fryer-Chicken-Breasts-6.jpg`,
-    //   [
-    //     new Ingredient('skinless chicken breasts', 4),
-    //     new Ingredient('teaspoon salt', 1),
-    //   ]
-    // ),
-  ];
+  private Recipes: Recipe[] = [];
   recipesChanged = new Subject<Recipe[]>();
-  constructor(private slService: ShoppingListService) {}
+  constructor(private store: Store<fromShoppingList.AppState>) {}
 
   ngOnInit() {}
 
   onAddIngredients(ings: Ingredient[]) {
-    this.slService.onAddIngredients(ings);
+    // this.slService.onAddIngredients(ings);
+    this.store.dispatch(new ShoppingListActions.AddIngredients(ings));
   }
   getRecipes() {
     return this.Recipes.slice();
