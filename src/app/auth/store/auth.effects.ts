@@ -51,6 +51,7 @@ export class AuthEffects {
               userId: resData.localId,
               token: resData.idToken,
               expirationDate: expirationDate,
+              redirect: true,
             });
           }),
           catchError((errorRes) => {
@@ -104,6 +105,7 @@ export class AuthEffects {
               userId: resData.localId,
               token: resData.idToken,
               expirationDate: expirationDate,
+              redirect: true,
             });
           }),
           catchError((errorRes) => {
@@ -150,13 +152,15 @@ export class AuthEffects {
       if (loadedUser.token) {
         const expirationDuration =
           new Date(userData._tokenExpiresDate).getTime() - new Date().getTime();
-        this.authService.setLogoutTimer(+expirationDuration * 1000);
+
+        this.authService.setLogoutTimer(+expirationDuration);
 
         return new AuthActions.AuthenticateSuccess({
           email: loadedUser.email,
           userId: loadedUser.id,
           token: userData._token,
           expirationDate: new Date(userData._tokenExpiresDate),
+          redirect: false,
         });
       }
       return { type: 'DUMMY' };
@@ -165,8 +169,8 @@ export class AuthEffects {
   @Effect({ dispatch: false })
   authRedirect = this.actions$.pipe(
     ofType(AuthActions.AUTHENTICATE_SUCCESS),
-    tap(() => {
-      this.router.navigate(['/']);
+    tap((authSuccess: AuthActions.AuthenticateSuccess) => {
+      if (authSuccess.payload.redirect) this.router.navigate(['/']);
     })
   );
   @Effect({ dispatch: false })

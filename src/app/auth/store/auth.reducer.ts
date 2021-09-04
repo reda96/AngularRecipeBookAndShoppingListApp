@@ -1,4 +1,3 @@
-import * as fromAppReducer from '../../store/app.reducer';
 import * as AuthActions from './auth.actions';
 import { User } from '../user.model';
 export interface State {
@@ -25,7 +24,7 @@ export function authReducer(
         action.payload.expirationDate
       );
       return { ...state, authError: null, user: newUser, loading: false };
-      break;
+
     case AuthActions.LOGOUT:
       return { ...state, user: null, loading: false };
     case AuthActions.AUTHENTICATE_FAIL:
